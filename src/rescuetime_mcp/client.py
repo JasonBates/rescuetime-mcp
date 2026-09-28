@@ -23,8 +23,20 @@ def find_env_file() -> Path:
     return locations[0]
 
 
+def _fill_from_keychain(*names):
+    """Fill missing secrets from the Keychain via `secrets` (1Password holds the master copy)."""
+    import subprocess
+    for name in names:
+        if not os.environ.get(name):
+            r = subprocess.run([os.path.expanduser("~/.local/bin/secrets"), "get", name],
+                               capture_output=True, text=True)
+            if r.returncode == 0 and r.stdout:
+                os.environ[name] = r.stdout
+
+
 ENV_PATH = find_env_file()
 load_dotenv(ENV_PATH)
+_fill_from_keychain("RESCUETIME_API_KEY")
 
 
 class RescueTimeAuthError(Exception):
