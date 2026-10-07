@@ -11,7 +11,7 @@ rescuetime-mcp/
 │   ├── server.py      # FastMCP server with 5 tools
 │   ├── client.py      # Async RescueTime API client
 │   └── models.py      # Pydantic models for API responses
-├── .env               # Secrets (gitignored)
+├── .env               # Non-secret settings only (gitignored)
 ├── .env.example       # Template showing required variables
 └── pyproject.toml     # Dependencies managed by uv
 ```
@@ -36,7 +36,7 @@ rescuetime-mcp/
 - `HourlyData` - Hour-level productivity data
 
 ## Secrets Management
-- All secrets in `.env` file (gitignored)
+- `RESCUETIME_API_KEY` comes from the Keychain via `~/.local/bin/secrets get RESCUETIME_API_KEY` (master copy in 1Password), filled in `client.py` when not already in the environment; it is not kept in `.env`
 - Required variable: `RESCUETIME_API_KEY`
 - Get your key from: https://www.rescuetime.com/anapi/manage
 
